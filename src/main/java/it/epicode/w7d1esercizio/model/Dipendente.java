@@ -13,6 +13,7 @@ public class Dipendente {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    @Column(unique = true)
     private String username;
     private String nome;
     private String cognome;
