@@ -1,23 +1,20 @@
 package it.epicode.w7d1esercizio.model;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class DipendenteRequest {
-    @NotBlank(message = "Username mancante")
+    @NotNull(message = "Username obbligatorio")
     private String username;
-
-    @NotBlank(message = "Nome mancante")
+    @NotNull(message = "Nome obbligatorio")
     private String nome;
-
-    @NotBlank(message = "Cognome mancante")
+    @NotNull(message = "Cognome obbligatorio")
     private String cognome;
-
-    @NotBlank(message = "Password mancante")
+    @NotNull(message = "Password obbligatoria")
     private String password;
 
     @Email(message = "Email mancante")

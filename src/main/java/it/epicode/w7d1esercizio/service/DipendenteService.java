@@ -50,7 +50,4 @@ public class DipendenteService {
         dipendente.setAvatar(url);
         return dipendenteRepository.save(dipendente);
     }
-    public Dipendente getDipendenteByUsername(String username){
-        return dipendenteRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Username dipendente non trovato"));
-    }
 }
