@@ -24,7 +24,6 @@ public class JwtFilter extends OncePerRequestFilter {
     private UtenteService utenteService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String authorization = request.getHeader("Authorization");
 
         if(authorization==null||!authorization.startsWith("Bearer ")){
@@ -38,11 +37,11 @@ public class JwtFilter extends OncePerRequestFilter {
         String username = jwtTools.getUsernameFromToken(token);
 
         Utente utente = utenteService.getUtenteByUsername(username);
-
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(utente, null);
-
+        //codice per autorizzare il servizio solo a utenti che cercano info sul proprio id/username
+        checkPathVariable(request, utente);
+        //fine gestione precedente
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(utente, null, utente.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         filterChain.doFilter(request, response);
 
     }
@@ -50,5 +49,21 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         return new AntPathMatcher().match("/auth/**", request.getServletPath());
+    }
+    private void checkPathVariable(HttpServletRequest request, Utente utente){
+        String[] parts = request.getServletPath().split("/");
+        if(parts.length==2){
+            if(parts[0].equals("dipendenti")){
+                int id = Integer.parseInt(parts[1]);
+
+                if(utente.getId()!=id){
+                    throw new UnauthorizedException("Non sei abilitato ad utilizzare il servizio per id differente.");
+                }
+            } else if (parts[0].equals("utenti")) {
+                if(!utente.getUsername().equals(parts[1])){
+                    throw new UnauthorizedException("Non sei abilitato ad utilizzare il servizio per un username differente.");
+                }
+            }
+        }
     }
 }

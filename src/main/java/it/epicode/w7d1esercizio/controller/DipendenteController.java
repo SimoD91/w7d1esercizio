@@ -7,6 +7,7 @@ import it.epicode.w7d1esercizio.service.DipendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +22,15 @@ public class DipendenteController {
     DipendenteService dipendenteService;
 
     @GetMapping("/dipendenti")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Dipendente> getAlL(Pageable pageable){
-
         return dipendenteService.getAllDipendenti(pageable);
     }
     @GetMapping("/dipendenti/{id}")
     public Dipendente getDipendenteById(@PathVariable int id){
         return dipendenteService.getDipendenteId(id);
     }
+
     @PostMapping("/dipendenti")
     public Dipendente saveDipendente(@RequestBody @Validated DipendenteRequest dipendenteRequest, BindingResult bindingResult){
         if (bindingResult.hasErrors()){

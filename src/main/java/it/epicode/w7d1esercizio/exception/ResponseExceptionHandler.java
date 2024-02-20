@@ -27,9 +27,11 @@ public class ResponseExceptionHandler {
     public ErrorResponse badRequestExceptionHandler(BadRequestException e) {
         return new ErrorResponse(e.getMessage());
     }
+
     @ExceptionHandler(DispositiviException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse DispositiviException(DispositiviException e) {
         return new ErrorResponse(e.getMessage());
     }
+
 }

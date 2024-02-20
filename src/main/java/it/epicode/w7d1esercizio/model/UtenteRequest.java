@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 public class UtenteRequest {
-    @NotBlank(message = "nome obbligatorio")
+    @NotBlank(message = "Nome obbligatorio")
     private String nome;
-    @NotBlank(message = "cognome obbligatorio")
+    @NotBlank(message = "Cognome obbligatorio")
     private String cognome;
-    @NotBlank(message = "username obbligatorio")
+    @NotBlank(message = "Username obbligatorio")
     private String username;
-    @NotBlank(message = "password obbligatoria")
+    @NotBlank(message = "Password obbligatoria")
     private String password;
 }
